@@ -1612,7 +1612,7 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
 #pragma mark - UIGestureRecognizerDelegate
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    return [self containslinkAtPoint:[touch locationInView:self]];
+    return ([self containslinkAtPoint:[touch locationInView:self]] || self.copyTextEnabled);
 }
 
 #pragma mark - UILongPressGestureRecognizer
@@ -1621,6 +1621,16 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
     switch (sender.state) {
         case UIGestureRecognizerStateBegan: {
             CGPoint touchPoint = [sender locationInView:self];
+
+            if (self.copyTextEnabled) {
+                [self becomeFirstResponder];
+                
+                UIMenuController *menu = [UIMenuController sharedMenuController];
+                [menu setTargetRect:self.frame inView:self.superview];
+                [menu setMenuVisible:YES animated:YES];
+            }
+            
+
             TTTAttributedLabelLink *link = [self linkAtPoint:touchPoint];
             
             if (link) {
@@ -1676,7 +1686,7 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
                 if ([self.delegate respondsToSelector:@selector(attributedLabel:didLongPressLinkWithTextCheckingResult:atPoint:)]) {
                     [self.delegate attributedLabel:self didLongPressLinkWithTextCheckingResult:result atPoint:touchPoint];
                 }
-            }
+            }            
             break;
         }
         default:

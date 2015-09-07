@@ -178,6 +178,15 @@ IB_DESIGNABLE
 ///---------------------------------------
 
 /**
+ Sets/indicates whether the text of the label should be copyable or not.
+ */
+@property (nonatomic, assign) BOOL copyTextEnabled;
+
+///---------------------------------------
+/// @name Acccessing Text Style Attributes
+///---------------------------------------
+
+/**
  The shadow blur radius for the label. A value of 0 indicates no blur, while larger values produce correspondingly larger blurring. This value must not be negative. The default value is 0. 
  */
 @property (nonatomic, assign) IBInspectable CGFloat shadowRadius;
@@ -623,6 +632,15 @@ didLongPressLinkWithTransitInformation:(NSDictionary *)components
 - (void)attributedLabel:(TTTAttributedLabel *)label
 didLongPressLinkWithTextCheckingResult:(NSTextCheckingResult *)result
                 atPoint:(CGPoint)point;
+
+/**
+ Tells the delegate that the user long-pressed the label.
+ 
+ @param label The label that was long pressed.
+ @param point the point pressed, in the label's coordinate space
+ */
+- (void)attributedLabel:(TTTAttributedLabel *)label
+    didLongPressAtPoint:(CGPoint)point;
 
 @end
 
